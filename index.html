@@ -9,6 +9,255 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="stylesheet" href="style.css">
+  <style>
+    .projects{
+      /* ===== Data Ink palette ===== */
+      --pf-ink: #05070d;
+      --pf-accent: #4fd8ff;
+      --pf-accent-soft: rgba(79,216,255,0.12);
+      --pf-card-bg: #0b0f18;
+      --pf-card-border: rgba(120,200,255,0.10);
+      --pf-text: #e7f1f7;
+      --pf-text-dim: #93a3b8;
+    }
+
+    /* Full-bleed outer wrapper so the carousel can scroll edge-to-edge
+       even if .section-inner has a max-width/padding */
+    .pf-carousel-outer{
+      width: 100vw;
+      margin-left: calc(50% - 50vw);
+      overflow: hidden;
+      padding: 48px 0 16px;
+      background:
+        linear-gradient(rgba(79,216,255,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(79,216,255,0.05) 1px, transparent 1px),
+        var(--pf-ink);
+      background-size: 42px 42px, 42px 42px, auto;
+      -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 4%, #000 96%, transparent 100%);
+      mask-image: linear-gradient(90deg, transparent 0, #000 4%, #000 96%, transparent 100%);
+    }
+
+    .pf-carousel-track{
+      display: flex;
+      gap: 28px;
+      width: max-content;
+      padding: 0 5vw;
+      animation: pf-scroll 38s linear infinite;
+      will-change: transform;
+    }
+
+    .pf-carousel-outer:hover .pf-carousel-track{
+      animation-play-state: paused;
+    }
+
+    @keyframes pf-scroll{
+      from{ transform: translateX(0); }
+      to{ transform: translateX(-50%); } 
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      .pf-carousel-track{ animation: none; }
+      .pf-carousel-outer{ overflow-x: auto; -webkit-mask-image:none; mask-image:none; }
+    }
+
+    .project-card-v2{
+      flex: 0 0 auto;
+      width: min(400px, 82vw);
+      background: var(--pf-card-bg);
+      border: 1px solid var(--pf-card-border);
+      border-radius: 22px;
+      overflow: hidden;
+      transition: transform .45s cubic-bezier(.16,1,.3,1), box-shadow .45s ease, border-color .45s ease;
+    }
+
+  
+    .project-card-v2--lg{ width: min(460px, 85vw); }  
+    .project-card-v2--md{ width: min(380px, 82vw); }  
+    .project-card-v2--sm{ width: min(300px, 75vw); }  
+
+    .project-card-v2:hover{
+      transform: translateY(-8px);
+      border-color: var(--pf-accent);
+      box-shadow: 0 30px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(79,216,255,0.15);
+    }
+
+    .pf-media{
+      position: relative;
+      padding: 10px;
+    }
+
+    .photo-grid{ position: relative; }
+    .photo-grid::after{
+      content:"";
+      position:absolute;
+      top:0; left:-35%;
+      width:30%; height:100%;
+      background: linear-gradient(100deg, transparent, rgba(79,216,255,0.45), transparent);
+      transform: skewX(-18deg);
+      transition: left .9s ease;
+      pointer-events:none;
+      z-index:3;
+    }
+    .photo-grid:hover::after{ left:130%; }
+
+    .photo-grid-1{ position:relative; }
+    .photo-grid-1::before{
+      content:"";
+      position:absolute; inset:0;
+      background: linear-gradient(180deg, transparent 35%, rgba(5,7,13,0.8) 100%);
+      z-index:1;
+      border-radius: inherit;
+    }
+
+  
+    .pf-stat{
+      position:absolute;
+      top:22px; right:22px;
+      z-index:2;
+      font-family:'Space Grotesk', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing:.4px;
+      color: var(--pf-accent);
+      background: rgba(5,7,13,0.55);
+      border: 1px solid rgba(79,216,255,0.25);
+      padding: 5px 12px;
+      border-radius: 20px;
+      backdrop-filter: blur(6px);
+    }
+
+.photo-grid{
+  position: relative;
+  height: 230px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #000;
+}
+
+.photo-grid img{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  opacity: 0;
+  transition: transform .6s ease;
+}
+
+.photo-grid:hover img{ transform: scale(1.06); }
+    
+.photo-grid-5 img{
+  animation: pf-fade-5 var(--pf-fade-dur, 16s) infinite;
+  animation-delay: calc(var(--pf-img-delay, 0s) + var(--pf-card-stagger, 0s));
+}
+.photo-grid-5 img:nth-child(1){ --pf-img-delay: 0s; }
+.photo-grid-5 img:nth-child(2){ --pf-img-delay: -3.2s; }
+.photo-grid-5 img:nth-child(3){ --pf-img-delay: -6.4s; }
+.photo-grid-5 img:nth-child(4){ --pf-img-delay: -9.6s; }
+.photo-grid-5 img:nth-child(5){ --pf-img-delay: -12.8s; }
+
+@keyframes pf-fade-5{
+  0%   { opacity: 0; }
+  3%   { opacity: 1; }
+  17%  { opacity: 1; }
+  20%  { opacity: 0; }
+  100% { opacity: 0; }
+}
+
+.photo-grid-3 img{
+  animation: pf-fade-3 var(--pf-fade-dur, 12s) infinite;
+  animation-delay: calc(var(--pf-img-delay, 0s) + var(--pf-card-stagger, 0s));
+}
+.photo-grid-3 img:nth-child(1){ --pf-img-delay: 0s; }
+.photo-grid-3 img:nth-child(2){ --pf-img-delay: -4s; }
+.photo-grid-3 img:nth-child(3){ --pf-img-delay: -8s; }
+
+@keyframes pf-fade-3{
+  0%   { opacity: 0; }
+  4%   { opacity: 1; }
+  29%  { opacity: 1; }
+  33%  { opacity: 0; }
+  100% { opacity: 0; }
+}
+
+.photo-grid-1 img{ opacity: 1; }
+
+.project-card-v2:nth-child(1){ --pf-card-stagger: 0s; }
+.project-card-v2:nth-child(2){ --pf-card-stagger: -2.4s; }
+.project-card-v2:nth-child(3){ --pf-card-stagger: -5.9s; }
+.project-card-v2:nth-child(4){ --pf-card-stagger: -9.7s; }
+
+
+.project-card-v2:nth-child(1){ --pf-card-stagger: 0s; }
+.project-card-v2:nth-child(2){ --pf-card-stagger: -2.4s; }
+.project-card-v2:nth-child(3){ --pf-card-stagger: -5.9s; }
+.project-card-v2:nth-child(4){ --pf-card-stagger: -9.7s; }
+.project-card-v2:nth-child(5){ --pf-card-stagger: -13.1s; }
+
+.project-card-v2:nth-child(6){ --pf-card-stagger: 0s; }
+.project-card-v2:nth-child(7){ --pf-card-stagger: -2.4s; }
+.project-card-v2:nth-child(8){ --pf-card-stagger: -5.9s; }
+.project-card-v2:nth-child(9){ --pf-card-stagger: -9.7s; }
+.project-card-v2:nth-child(10){ --pf-card-stagger: -13.1s; }
+/* --- Dot indicator --- */
+.pf-dots{
+  position: absolute;
+  left: 0; right: 0;
+  bottom: 14px;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  pointer-events: none;
+}
+.pf-dot{
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.4);
+}
+
+.photo-grid-5 ~ .pf-dots .pf-dot{
+  animation: pf-dot-5 var(--pf-fade-dur, 16s) infinite;
+  animation-delay: calc(var(--pf-img-delay, 0s) + var(--pf-card-stagger, 0s));
+}
+.photo-grid-5 ~ .pf-dots .pf-dot:nth-child(1){ --pf-img-delay: 0s; }
+.photo-grid-5 ~ .pf-dots .pf-dot:nth-child(2){ --pf-img-delay: -3.2s; }
+.photo-grid-5 ~ .pf-dots .pf-dot:nth-child(3){ --pf-img-delay: -6.4s; }
+.photo-grid-5 ~ .pf-dots .pf-dot:nth-child(4){ --pf-img-delay: -9.6s; }
+.photo-grid-5 ~ .pf-dots .pf-dot:nth-child(5){ --pf-img-delay: -12.8s; }
+
+.photo-grid-3 ~ .pf-dots .pf-dot{
+  animation: pf-dot-3 var(--pf-fade-dur, 12s) infinite;
+  animation-delay: calc(var(--pf-img-delay, 0s) + var(--pf-card-stagger, 0s));
+}
+.photo-grid-3 ~ .pf-dots .pf-dot:nth-child(1){ --pf-img-delay: 0s; }
+.photo-grid-3 ~ .pf-dots .pf-dot:nth-child(2){ --pf-img-delay: -4s; }
+.photo-grid-3 ~ .pf-dots .pf-dot:nth-child(3){ --pf-img-delay: -8s; }
+
+@keyframes pf-dot-5{
+  0%, 100% { background: rgba(255,255,255,0.4); transform: scale(1); }
+  3%, 17%  { background: var(--pf-accent); transform: scale(1.3); }
+  20%      { background: rgba(255,255,255,0.4); transform: scale(1); }
+}
+@keyframes pf-dot-3{
+  0%, 100% { background: rgba(255,255,255,0.4); transform: scale(1); }
+  4%, 29%  { background: var(--pf-accent); transform: scale(1.3); }
+  33%      { background: rgba(255,255,255,0.4); transform: scale(1); }
+}
+
+
+.project-card-v2:hover .photo-grid img,
+.project-card-v2:hover .pf-dot{
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce){
+  .photo-grid-5 img, .photo-grid-3 img, .pf-dot{ animation: none; }
+  .photo-grid-5 img:first-child, .photo-grid-3 img:first-child{ opacity: 1; }
+}
+  </style>
 </head>
 <body>
 
@@ -68,8 +317,7 @@
         <div class="photo-ring"></div>
         <img src="assets/images/hana.png" alt="Hana Rahmaya Zahra" class="hero-photo">
         <div class="photo-badge">
-          <span class="badge-emoji"></span>
-          <span></span>
+          
         </div>
       </div>
     </div>
@@ -88,8 +336,7 @@
       <div class="service-card" data-reveal>
         <div class="service-icon"><i class="fas fa-code"></i></div>
         <h3>Web Development</h3>
-        <p>Membangun website responsif dengan HTML, CSS, PHP, JavaScript, dan Laravel dari tampilan hingga logika backend.
-          Termasuk implementasi fitur CRUD, autentikasi, dan manajemen session.</p>
+        <p>Membangun website responsif dengan HTML, CSS, PHP, JavaScript, dan Laravel — dari tampilan hingga logika backend.</p>
       </div>
       <div class="service-card" data-reveal>
         <div class="service-icon"><i class="fas fa-database"></i></div>
@@ -201,7 +448,7 @@
     <h2 class="section-title">Certifications</h2>
     <div class="cert-grid">
 
-      <!-- Cert 1: BNSP -->
+
       <div class="cert-card" data-reveal>
         <div class="cert-header">
           
@@ -235,11 +482,11 @@
           <span class="cert-badge expert">Expert</span>
         </div>
         <div class="cert-body">
-          <h3>Sertifikasi Kompetensi Sistem Basis Data</h3>
+          <h3>Sertifikasi Kompetensi Industri — Sistem Basis Data</h3>
           <span class="cert-issuer">PT Iner Corp Indonesia</span>
           <ul class="cert-points">
             <li>Uji kompetensi berbasis industri di bidang Sistem Basis Data</li>
-            <li>Diraih dengan predikat <strong style="color:#fbbf24">Expert</strong> keahlian tingkat lanjut</li>
+            <li>Diraih dengan predikat <strong style="color:#fbbf24">Expert</strong> — keahlian tingkat lanjut</li>
             <li>Mencakup desain database, penyusunan query, & optimasi sistem</li>
             <li>Siap diaplikasikan dalam operasional data skala industri</li>
           </ul>
@@ -262,23 +509,25 @@
   <div class="section-inner">
     <div class="section-label">Portfolio</div>
     <h2 class="section-title">Selected Work</h2>
-    <div class="projects-grid">
+  </div>
 
-      <div class="project-card featured" data-reveal>
-        <div class="project-media">
-          <div class="slider-wrap">
-            <div class="slider" data-total="6">
-              <img src="assets/images/Homepage.png" alt="Website Akademik 1">
-              <img src="assets/images/pro1.png" alt="Website Akademik 2">
-              <img src="assets/images/pro1.3.png" alt="Website Akademik 3">
-              <img src="assets/images/pro1.4.png" alt="Website Akademik 4">
-              <img src="assets/images/pro1.3.png" alt="Website Akademik 5">
-              <img src="assets/images/pro1.5.png" alt="Website Akademik 6">
-            </div>
-            <button class="s-prev">&#8592;</button>
-            <button class="s-next">&#8594;</button>
-            <div class="slide-dots"></div>
+  <div class="pf-carousel-outer" id="pfCarousel">
+    <div class="pf-carousel-track" id="pfTrack">
+
+      <article class="project-card-v2 project-card-v2--lg">
+        <div class="pf-media">
+          <div class="photo-grid photo-grid-5">
+            <img src="assets/images/Homepage.png" alt="Website Akademik - Homepage">
+            <img src="assets/images/pro1.png" alt="Website Akademik - halaman 2">
+            <img src="assets/images/pro1.3.png" alt="Website Akademik - halaman 3">
+            <img src="assets/images/pro1.4.png" alt="Website Akademik - halaman 4">
+            <img src="assets/images/pro1.5.png" alt="Website Akademik - halaman 5">
           </div>
+          <div class="pf-dots" aria-hidden="true">
+            <span class="pf-dot"></span><span class="pf-dot"></span><span class="pf-dot"></span>
+            <span class="pf-dot"></span><span class="pf-dot"></span>
+          </div>
+          <span class="pf-pill">Web Development</span>
         </div>
         <div class="project-info">
           <div class="project-tags"><span>HTML</span><span>CSS</span><span>PHP</span><span>MySQL</span></div>
@@ -286,20 +535,19 @@
           <p>Platform pendidikan berbasis web dengan fitur dinamis untuk manajemen konten akademik, data siswa, dan informasi sekolah.</p>
           <a href="https://github.com/HanaZahra-dev/Website-Pendidikan-Berkualitas-" class="project-link" target="_blank">View on GitHub <i class="fas fa-arrow-right"></i></a>
         </div>
-      </div>
+      </article>
 
-      <div class="project-card" data-reveal>
-        <div class="project-media">
-          <div class="slider-wrap">
-            <div class="slider" data-total="3">
-              <img src="assets/images/e-pegawai.png" alt="E-pegawai 1">
-              <img src="assets/images/pro2.png" alt="E-pegawai 2">
-              <img src="assets/images/pro2.3.png" alt="E-pegawai 3">
-            </div>
-            <button class="s-prev">&#8592;</button>
-            <button class="s-next">&#8594;</button>
-            <div class="slide-dots"></div>
+      <article class="project-card-v2 project-card-v2--lg">
+        <div class="pf-media">
+          <div class="photo-grid photo-grid-3">
+            <img src="assets/images/e-pegawai.png" alt="E-Pegawai - tampilan 1">
+            <img src="assets/images/pro2.png" alt="E-Pegawai - tampilan 2">
+            <img src="assets/images/pro2.3.png" alt="E-Pegawai - tampilan 3">
           </div>
+          <div class="pf-dots" aria-hidden="true">
+            <span class="pf-dot"></span><span class="pf-dot"></span><span class="pf-dot"></span>
+          </div>
+          <span class="pf-pill">Web Development</span>
         </div>
         <div class="project-info">
           <div class="project-tags"><span>Laravel</span><span>PHP</span><span>MySQL</span></div>
@@ -307,11 +555,15 @@
           <p>Sistem manajemen kepegawaian berbasis Laravel dengan fitur CRUD data pegawai, absensi, dan laporan.</p>
           <a href="https://github.com/HanaZahra-dev/E-pegawai-laravel" class="project-link" target="_blank">View on GitHub <i class="fas fa-arrow-right"></i></a>
         </div>
-      </div>
+      </article>
 
-      <div class="project-card" data-reveal>
-        <div class="project-media single">
-          <img src="assets/images/data.jpg" alt="Data Analyst Project">
+      <article class="project-card-v2 project-card-v2--sm">
+        <div class="pf-media">
+          <div class="photo-grid photo-grid-1">
+            <img src="assets/images/data.jpg" alt="Data Analyst Project">
+          </div>
+          <span class="pf-stat">Exploratory Data Analysis</span>
+          <span class="pf-pill">Data Analytics</span>
         </div>
         <div class="project-info">
           <div class="project-tags"><span>Python</span><span>Pandas</span><span>Matplotlib</span></div>
@@ -319,11 +571,15 @@
           <p>Analisis dan visualisasi dataset menggunakan Python — eksplorasi data, pembersihan, dan penarikan insight statistik.</p>
           <a href="https://github.com/HanaZahra-dev/Data-Analyst_Project-1" class="project-link" target="_blank">View on GitHub <i class="fas fa-arrow-right"></i></a>
         </div>
-      </div>
+      </article>
 
-      <div class="project-card" data-reveal>
-        <div class="project-media single">
-          <img src="assets/images/ERP.jpg" alt="ERP Inventory Database">
+      <article class="project-card-v2 project-card-v2--sm">
+        <div class="pf-media">
+          <div class="photo-grid photo-grid-1">
+            <img src="assets/images/ERP.jpg" alt="ERP Inventory Database">
+          </div>
+          <span class="pf-stat">Skema Ternormalisasi</span>
+          <span class="pf-pill">Database Design</span>
         </div>
         <div class="project-info">
           <div class="project-tags"><span>SQL</span><span>MySQL</span><span>Database Design</span></div>
@@ -331,8 +587,134 @@
           <p>Perancangan skema database ERP untuk manajemen inventaris — relasi tabel, normalisasi, dan optimasi query.</p>
           <a href="https://github.com/HanaZahra-dev/ERP-Inventory-Database" class="project-link" target="_blank">View on GitHub <i class="fas fa-arrow-right"></i></a>
         </div>
-      </div>
+      </article>
 
+      <article class="project-card-v2 project-card-v2--lg">
+        <div class="pf-media">
+          <div class="photo-grid photo-grid-5">
+            <img src="assets/images/beranda.p.png" alt="beranda - halaman 1">
+            <img src="assets/images/dashboard.p.png" alt="dashboard - halaman 2">
+            <img src="assets/images/buku.p.png" alt="buku - halaman 3">
+            <img src="assets/images/Daftar-Anggota.p.png" alt="Daftar-Anggota - halaman 4">
+            <img src="assets/images/Laman Pilih-Buku.p.png" alt="Pilih-Buku - halaman 5">
+          </div>
+          <div class="pf-dots" aria-hidden="true">
+            <span class="pf-dot"></span><span class="pf-dot"></span><span class="pf-dot"></span>
+            <span class="pf-dot"></span><span class="pf-dot"></span>
+          </div>
+          <span class="pf-pill">Web Development</span>
+        </div>
+        <div class="project-info">
+          <div class="project-tags"><span>Laravel</span><span>MySQL</span><span>PHP</span></div>
+          <h3>Sistem Informasi Perpustakaan</h3>
+          <p>Sistem Informasi Perpustakaan merupakan aplikasi berbasis web yang dibuat untuk membantu proses pengelolaan perpustakaan secara digital
+            serta mempermudah admin dalam mengelola data buku, kategori, penerbit, rak, serta mengelola proses peminjaman dan pengembalian buku
+          </p>
+          <a href="https://github.com/HanaZahra-dev/Sistem-Informasi-Perpustakaan" class="project-link" target="_blank">View on GitHub <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </article>
+   
+<div style="display:contents;" aria-hidden="true">
+
+  <article class="project-card-v2 project-card-v2--lg">
+    <div class="pf-media">
+      <div class="photo-grid photo-grid-5">
+        <img src="assets/images/Homepage.png" alt="">
+        <img src="assets/images/pro1.png" alt="">
+        <img src="assets/images/pro1.3.png" alt="">
+        <img src="assets/images/pro1.4.png" alt="">
+        <img src="assets/images/pro1.5.png" alt="">
+      </div>
+      <div class="pf-dots" aria-hidden="true">
+        <span class="pf-dot"></span><span class="pf-dot"></span><span class="pf-dot"></span>
+        <span class="pf-dot"></span><span class="pf-dot"></span>
+      </div>
+      <span class="pf-pill">Web Development</span>
+    </div>
+    <div class="project-info">
+      <div class="project-tags"><span>HTML</span><span>CSS</span><span>PHP</span><span>MySQL</span></div>
+      <h3>Website Akademik</h3>
+      <p>Platform pendidikan berbasis web dengan fitur dinamis untuk manajemen konten akademik, data siswa, dan informasi sekolah.</p>
+      <a href="https://github.com/HanaZahra-dev/Website-Pendidikan-Berkualitas-" class="project-link" tabindex="-1">View on GitHub <i class="fas fa-arrow-right"></i></a>
+    </div>
+  </article>
+
+  <article class="project-card-v2 project-card-v2--lg">
+    <div class="pf-media">
+      <div class="photo-grid photo-grid-3">
+        <img src="assets/images/e-pegawai.png" alt="">
+        <img src="assets/images/pro2.png" alt="">
+        <img src="assets/images/pro2.3.png" alt="">
+      </div>
+      <div class="pf-dots" aria-hidden="true">
+        <span class="pf-dot"></span><span class="pf-dot"></span><span class="pf-dot"></span>
+      </div>
+      <span class="pf-pill">Web Development</span>
+    </div>
+    <div class="project-info">
+      <div class="project-tags"><span>Laravel</span><span>PHP</span><span>MySQL</span></div>
+      <h3>E-Pegawai</h3>
+      <p>Sistem manajemen kepegawaian berbasis Laravel dengan fitur CRUD data pegawai, absensi, dan laporan.</p>
+      <a href="https://github.com/HanaZahra-dev/E-pegawai-laravel" class="project-link" tabindex="-1">View on GitHub <i class="fas fa-arrow-right"></i></a>
+    </div>
+  </article>
+
+  <article class="project-card-v2 project-card-v2--sm">
+    <div class="pf-media">
+      <div class="photo-grid photo-grid-1">
+        <img src="assets/images/data.jpg" alt="">
+      </div>
+      <span class="pf-stat">Exploratory Data Analysis</span>
+      <span class="pf-pill">Data Analytics</span>
+    </div>
+    <div class="project-info">
+      <div class="project-tags"><span>Python</span><span>Pandas</span><span>Matplotlib</span></div>
+      <h3>Data Analyst Project</h3>
+      <p>Analisis dan visualisasi dataset menggunakan Python — eksplorasi data, pembersihan, dan penarikan insight statistik.</p>
+      <a href="https://github.com/HanaZahra-dev/Data-Analyst_Project-1" class="project-link" tabindex="-1">View on GitHub <i class="fas fa-arrow-right"></i></a>
+    </div>
+  </article>
+
+  <article class="project-card-v2 project-card-v2--sm">
+    <div class="pf-media">
+      <div class="photo-grid photo-grid-1">
+        <img src="assets/images/ERP.jpg" alt="">
+      </div>
+      <span class="pf-stat">Skema Ternormalisasi</span>
+      <span class="pf-pill">Database Design</span>
+    </div>
+    <div class="project-info">
+      <div class="project-tags"><span>SQL</span><span>MySQL</span><span>Database Design</span></div>
+      <h3>ERP Inventory Database</h3>
+      <p>Perancangan skema database ERP untuk manajemen inventaris — relasi tabel, normalisasi, dan optimasi query.</p>
+      <a href="https://github.com/HanaZahra-dev/ERP-Inventory-Database" class="project-link" tabindex="-1">View on GitHub <i class="fas fa-arrow-right"></i></a>
+    </div>
+  </article>
+
+  <article class="project-card-v2 project-card-v2--lg">
+    <div class="pf-media">
+      <div class="photo-grid photo-grid-5">
+        <img src="assets/images/[FOTO-1].png" alt="">
+        <img src="assets/images/[FOTO-2].png" alt="">
+        <img src="assets/images/[FOTO-3].png" alt="">
+        <img src="assets/images/[FOTO-4].png" alt="">
+        <img src="assets/images/[FOTO-5].png" alt="">
+      </div>
+      <div class="pf-dots" aria-hidden="true">
+        <span class="pf-dot"></span><span class="pf-dot"></span><span class="pf-dot"></span>
+        <span class="pf-dot"></span><span class="pf-dot"></span>
+      </div>
+      <span class="pf-pill">Web Development</span>
+    </div>
+    <div class="project-info">
+      <div class="project-tags"><span>[Tag1]</span><span>[Tag2]</span><span>[Tag3]</span></div>
+      <h3>[Nama Project]</h3>
+      <p>[Deskripsi singkat project, 1-2 kalimat.]</p>
+      <a href="[LINK-GITHUB]" class="project-link" tabindex="-1">View on GitHub <i class="fas fa-arrow-right"></i></a>
+    </div>
+  </article>
+
+</div>
     </div>
   </div>
 </section>
@@ -355,5 +737,23 @@
 </footer>
 
 <script src="script.js"></script>
+  
+<script>
+  (function(){
+    var outer = document.getElementById('pfCarousel');
+    var track = document.getElementById('pfTrack');
+    if(!outer || !track) return;
+    var resumeTimer;
+    outer.addEventListener('touchstart', function(){
+      track.style.animationPlayState = 'paused';
+      clearTimeout(resumeTimer);
+    }, {passive:true});
+    outer.addEventListener('touchend', function(){
+      resumeTimer = setTimeout(function(){
+        track.style.animationPlayState = 'running';
+      }, 2500);
+    }, {passive:true});
+  })();
+</script>
 </body>
 </html>
